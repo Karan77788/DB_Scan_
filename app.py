@@ -10,19 +10,16 @@ app = Flask(__name__)
 def index():
     df = pd.read_csv('sensor_data.csv')
 
-    # Normalize features
     features = ['MeanTemp', 'Variance', 'SpikeCount']
     X = df[features]
     X_scaled = StandardScaler().fit_transform(X)
 
-    # Apply DBSCAN
     db = DBSCAN(eps=1.2, min_samples=3).fit(X_scaled)
     df['Cluster'] = db.labels_
 
-    # Assign anomaly label
     df['Anomaly'] = df['Cluster'].apply(lambda x: 'Yes' if x == -1 else 'No')
 
-    # 3D Scatter Plot
+
     fig = px.scatter_3d(
         df, x='MeanTemp', y='Variance', z='SpikeCount',
         color=df['Cluster'].astype(str),
