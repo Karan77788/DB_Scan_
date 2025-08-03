@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensor Anomaly DBSCAN</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body { font-family: Arial; margin: 30px; background: #f9f9f9; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #eee; }
+        .anomaly { background-color: #ffcccc; }
+    </style>
+</head>
+<body>
+    <h1>Sensor Anomaly Detection using DBSCAN</h1>
+    {{ plot|safe }}
+
+    <h2>Sensor Data</h2>
+    <table>
+        <tr>
+            <th>SensorID</th><th>MeanTemp</th><th>Variance</th><th>SpikeCount</th>
+            <th>Cluster</th><th>Anomaly</th>
+        </tr>
+        {% for row in data %}
+        <tr class="{{ 'anomaly' if row['Anomaly'] == 'Yes' else '' }}">
+            <td>{{ row['SensorID'] }}</td>
+            <td>{{ row['MeanTemp'] }}</td>
+            <td>{{ row['Variance'] }}</td>
+            <td>{{ row['SpikeCount'] }}</td>
+            <td>{{ row['Cluster'] }}</td>
+            <td>{{ row['Anomaly'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
